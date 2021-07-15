@@ -1,3 +1,3 @@
 {
-    "files": ["qml/components/CircularProgressBar.qml","qml/loginScreen.qml","main.py","qml/mainScreen.qml","qml/components/CustomButton.qml","qml/components/CustomTextField.qml"]
+    "files": ["qml/components/CircularProgressBar.qml","qml/components/CustomTextField.qml","qml/loginScreen.qml","main.py","qml/components/CustomButton.qml","qml/mainScreen.qml","qml/components/CustomAppButton.qml"]
 }
