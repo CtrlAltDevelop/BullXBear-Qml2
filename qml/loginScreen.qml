@@ -17,12 +17,12 @@ Window {
 	flags: Qt.SplashScreen | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
 
 	property bool darkMode: true
-	property color surfaceColor: darkMode ? "#ef38393b" : '#efffffff'
-	property color bgColor: darkMode ? "#ef25262a" : '#efd9dee2'
-	property color deepColor: darkMode ? "#ef2d3134" : '#efeef2f5'
-	property color spColor: darkMode ? "#ef404348" : '#efe3e7ea'
-	property color fgColor: darkMode ? "#eff0f0f2" : '#ef4c4d4f'
-	property color pgColor: darkMode ? "#effeffff" : '#ef141414'
+	property color surfaceColor: darkMode ? "#f938393b" : '#f9ffffff'
+	property color bgColor: darkMode ? "#f925262a" : '#f9d9dee2'
+	property color deepColor: darkMode ? "#f92d3134" : '#f9eef2f5'
+	property color spColor: darkMode ? "#f9404348" : '#f9e3e7ea'
+	property color fgColor: darkMode ? "#f9f0f0f2" : '#f94c4d4f'
+	property color pgColor: darkMode ? "#f9feffff" : '#f9141414'
 
 	property color specialColorHigh: "#4975be"
 	property color specialColor: "#55aaff"
