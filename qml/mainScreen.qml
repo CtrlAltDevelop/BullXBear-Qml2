@@ -39,6 +39,7 @@ Window {
 
 	property bool isMaximize: false
 	property bool isFullscreen: false
+	property bool isSecureOrNot: false
 
 	QtObject {
 		id: internal
@@ -46,6 +47,7 @@ Window {
 				isMaximize = false
 				mainScreen.showNormal()
 				maximizeBtn.iconBtnSource = "../images/svg/square.svg"
+				fullscreenBtn.iconBtnSource =  "../images/svg/fullscreen.svg"
 			} else {
 				isMaximize = true
 				mainScreen.showMaximized()
@@ -56,12 +58,25 @@ Window {
 		function fullscreenRestore() {if (isFullscreen) {
 				isFullscreen = false
 				mainScreen.showNormal()
+				maximizeBtn.iconBtnSource = "../images/svg/square.svg"
 				fullscreenBtn.iconBtnSource =  "../images/svg/fullscreen.svg"
 			} else {
 				isFullscreen = true
 				mainScreen.showFullScreen()
 				fullscreenBtn.iconBtnSource =  "../images/svg/-fullscreen.svg"
 			}
+		}
+
+		function tryToBeSecureOrNot() {if(isSecureOrNot){
+				isSecureOrNot = false
+				secureBtn.iconBtnSource = "../images/svg/fi-rr-eye-crossed.svg"
+			} else {
+				isSecureOrNot = true
+				secureBtn.iconBtnSource = "../images/svg/fi-rr-eye.svg"
+			}
+		}
+
+		function themeChange() {if(darkMode) {darkMode = false} else {darkMode = true}
 		}
 	}
 
@@ -125,15 +140,15 @@ Window {
 			CustomAppButton {
 				id: closeBtn
 				anchors.verticalCenter: parent.verticalCenter
-				anchors.verticalCenterOffset: -8
+				anchors.verticalCenterOffset: -5
 				z: 1
 				hoverColotBtn: "#884848"
 				pressColotBtn: "#ff2222"
 				iconBtnSource: "../images/svg/close.svg"
-				// CustomToolTip {text: "Exit"}
+				CustomToolTip {text: "Exit"}
 				onClicked: mainScreen.close()
 				anchors {
-					rightMargin: 20
+					rightMargin: 16
 					right: parent.right
 				}
 			}
@@ -141,45 +156,104 @@ Window {
 			CustomAppButton {
 				id: fullscreenBtn
 				anchors.verticalCenter: parent.verticalCenter
-				anchors.verticalCenterOffset: -8
+				anchors.verticalCenterOffset: -5
 				z: 1
 				iconBtnSource: "../images/svg/fullscreen.svg"
-				// CustomToolTip {text: "Full Screen"}
+				CustomToolTip {text: "Full Screen"}
 				onClicked: internal.fullscreenRestore()
 				anchors {
 					right: closeBtn.left
-					rightMargin: 20
+					rightMargin: 16
 				}
 			}
 
 			CustomAppButton {
 				id: maximizeBtn
 				anchors.verticalCenter: parent.verticalCenter
-				anchors.verticalCenterOffset: -8
+				anchors.verticalCenterOffset: -5
 				z: 1
 				iconBtnSource: "../images/svg/square.svg"
-				// CustomToolTip {text: "Maximize"}
+				CustomToolTip {text: "Maximize"}
 				onClicked: internal.maximizeRestore()
 				anchors {
 					right: fullscreenBtn.left
-					rightMargin: 20
+					rightMargin: 16
 				}
 			}
 
 			CustomAppButton {
 				id: minimizeBtn
 				anchors.verticalCenter: parent.verticalCenter
-				anchors.verticalCenterOffset: -8
+				anchors.verticalCenterOffset: -5
 				z: 1
 				iconBtnSource: "../images/svg/min.svg"
-				onPressed: mainScreen.showMinimized()
-				// CustomToolTip {text: "Minimize"}
+				onClicked: mainScreen.showMinimized()
+				CustomToolTip {text: "Minimize"}
 				anchors {
 					right: maximizeBtn.left
-					rightMargin: 20
+					rightMargin: 16
 				}
 			}
 
+			CustomAppButton {
+				id: sepratorLine
+				sizeBtn: 24
+				anchors.verticalCenter: parent.verticalCenter
+				anchors.verticalCenterOffset: -5
+				z: 1
+				pressColotBtn: '#999999'
+				hoverColotBtn: '#999999'
+				defaultColotBtn: '#999999'
+				iconBtnSource: "../images/svg/v-line.svg"
+				anchors {
+					right: minimizeBtn.left
+					rightMargin: 0
+				}
+			}
+
+			CustomAppButton {
+				id: secureBtn
+				sizeBtn: 16
+				anchors.verticalCenter: parent.verticalCenter
+				anchors.rightMargin: 3
+				anchors.verticalCenterOffset: -5
+				z: 1
+				onClicked: internal.tryToBeSecureOrNot()
+				iconBtnSource: "../images/svg/fi-rr-eye-crossed.svg"
+				CustomToolTip {text: "Secure"}
+				anchors {
+					right: sepratorLine.left
+				}
+			}
+
+			CustomAppButton {
+				id: themeBtn
+				sizeBtn: 16
+				anchors.verticalCenter: parent.verticalCenter
+				anchors.verticalCenterOffset: -5
+				z: 1
+				onClicked: internal.themeChange()
+				iconBtnSource: "../images/svg/fi-rr-opacity.svg"
+				CustomToolTip {text: "Theme"}
+				anchors {
+					right: secureBtn.left
+					rightMargin: 16
+				}
+			}
+
+			CustomAppButton {
+				id: notificationBtn
+				sizeBtn: 16
+				anchors.verticalCenter: parent.verticalCenter
+				anchors.verticalCenterOffset: -5
+				z: 1
+				iconBtnSource: "../images/svg/fi-rr-bell.svg"
+				CustomToolTip {text: "Notification"}
+				anchors {
+					right: themeBtn.left
+					rightMargin: 16
+				}
+			}
 		}
 
 		Rectangle {
@@ -215,10 +289,6 @@ Window {
 			anchors.rightMargin: 10
 			anchors.bottomMargin: 10
 		}
-
-
-
-
 	}
 
 	MouseArea {
