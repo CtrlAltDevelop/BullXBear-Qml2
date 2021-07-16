@@ -6,6 +6,7 @@ Rectangle {
 	id: customCheckBtn
 
 	property int sizeBtn: 15
+	property string checkBtnText: qsTr("Type Something")
 	property bool checkStatus: false
 	property color hoverColotBtn: "#555555"
 	property color pressColotBtn: "#000000"
@@ -70,7 +71,7 @@ Rectangle {
 
 	Text {
 		id: textBtn
-		text: qsTr("Type Something")
+		text: customCheckBtn.checkBtnText
 		anchors.left: checkBtn.right
 		anchors.right: parent.right
 		anchors.top: parent.top

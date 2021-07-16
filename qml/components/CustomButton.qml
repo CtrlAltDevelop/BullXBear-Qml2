@@ -27,14 +27,14 @@ Button {
 			id: name
 			text: button.text
 			font: button.font
-			color: button.colorText
+			color: internal.dynamicColor
 			anchors.verticalCenter: parent.verticalCenter
 			anchors.horizontalCenter: parent.horizontalCenter
 		}
 	}
 
 	background: Rectangle{
-		color: internal.dynamicColor
+		color: "#00000000"
 		radius: 10
 	}
 }
