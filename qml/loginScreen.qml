@@ -16,8 +16,10 @@ Window {
 	title: qsTr("Bull X Bear | Login")
 	flags: Qt.SplashScreen | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
 
-	property bool darkMode: false
-	property color bgColor: darkMode ? "#ef3f4448" : '#efeef2f5'
+	property bool darkMode: true
+	property color surfaceColor: darkMode ? "#ef38393b" : '#efffffff'
+	property color bgColor: darkMode ? "#ef25262a" : '#efd9dee2'
+	property color deepColor: darkMode ? "#ef2d3134" : '#efeef2f5'
 	property color spColor: darkMode ? "#ef404348" : '#efe3e7ea'
 	property color fgColor: darkMode ? "#eff0f0f2" : '#ef4c4d4f'
 	property color pgColor: darkMode ? "#effeffff" : '#ef141414'
@@ -40,11 +42,10 @@ Window {
 		focus: true
 		color: "#00000000"
 		anchors.fill: parent
-		DragHandler { onActiveChanged: if(active){loginScreen.startSystemMove()}}
+		DragHandler {onActiveChanged: if(active){loginScreen.startSystemMove()}}
 
 		CustomAppButton {
 			id: closeBtn
-			z: 1
 			opacity: 0
 			sizeBtn: 25
 			anchors.topMargin: 20
@@ -80,6 +81,7 @@ Window {
 			id: logoImage
 			anchors.verticalCenter: parent.verticalCenter
 			source: "../images/logo/ms-icon-144x144.png"
+			z: 1
 			anchors.horizontalCenter: parent.horizontalCenter
 		}
 
@@ -134,30 +136,51 @@ Window {
 
 		CustomCheckBox {
 			id: rememberCheckBox
-			width: usernameTextField.width
-			height: 20
-
+			width: 100
+			height: 35
+			checkBtnText: qsTr('Remember me')
 			opacity: usernameTextField.opacity
+			anchors.left: parent.left
+			anchors.right: loginButton.left
 			anchors.top: passwordTextField.bottom
-			anchors.horizontalCenter: parent.horizontalCenter
+			anchors.rightMargin: 0
+			anchors.leftMargin: 50
 			anchors.topMargin: 10
 		}
 
 		CustomButton {
-			id: customButton
-			width: usernameTextField.width
+			id: loginButton
+			x: 142
+			width: 173
 			height: 35
 			opacity: usernameTextField.opacity
-			anchors.top: rememberCheckBox.bottom
-			anchors.horizontalCenterOffset: 0
 			font.pointSize: 12
-			anchors.horizontalCenter: parent.horizontalCenter
-			anchors.topMargin: 10
 			text: "Login"
+			anchors.right: passwordTextField.right
+			anchors.top: passwordTextField.bottom
+			anchors.rightMargin: 0
+			anchors.topMargin: 10
 			colorPressed: loginScreen.specialColor
 			colorMouseOver: loginScreen.specialColorLow
-			colorDefault: loginScreen.specialColorLight
+			colorDefault: loginScreen.fgColor
 			colorText: loginScreen.fgColor
+		}
+
+		Label {
+			id: label
+			opacity: usernameTextField.opacity
+			text: qsTr("Copytight © 2020, www.BullXBear.com.")
+			anchors.left: parent.left
+			anchors.right: parent.right
+			anchors.bottom: parent.bottom
+			font.letterSpacing: 1
+			horizontalAlignment: Text.AlignHCenter
+			verticalAlignment: Text.AlignVCenter
+			anchors.leftMargin: 0
+			anchors.rightMargin: 0
+			textFormat: Text.PlainText
+			anchors.bottomMargin: 10
+			color: loginScreen.fgColor
 		}
 	}
 
@@ -269,6 +292,6 @@ Window {
 
 /*##^##
 Designer {
-	D{i:0;formeditorZoom:1.75}D{i:10}
+	D{i:0;formeditorZoom:1.75}D{i:8}D{i:9}D{i:11}
 }
 ##^##*/
