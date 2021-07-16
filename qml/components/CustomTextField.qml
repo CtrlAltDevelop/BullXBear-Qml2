@@ -13,7 +13,7 @@ TextField {
 	property color selectTextColor: "#ffffff"
 	property color selectColor: "#55aaff"
 	property color holderTextColor: "#55aaff"
-	property int borderWidth: 3
+	property int borderWidth: 2
 
 	QtObject {
 		id: internal
@@ -27,7 +27,7 @@ TextField {
 	color: textColor
 	background: Rectangle {
 		color: internal.dynamicColor
-		radius: 10
+		radius: 15
 		border.color: borderColor
 		border.width: borderWidth
 	}
