@@ -16,6 +16,8 @@ Window {
 	title: qsTr("Bull X Bear | Login")
 	flags: Qt.SplashScreen | Qt.FramelessWindowHint | Qt.WindowStaysOnTopHint
 
+	property string lastUserLogin: 'Mohammad'
+
 	property bool darkMode: true
 	property color surfaceColor: darkMode ? "#f938393b" : '#f9ffffff'
 	property color bgColor: darkMode ? "#f925262a" : '#f9d9dee2'
@@ -34,6 +36,34 @@ Window {
 	property color hoverColor: darkMode ? "#999999" : "#999999"
 	property color focusColor: darkMode ? "#55aaff" : "#55aaff"
 	property color defaultColot: darkMode ? "#bbbbbb" : "#bbbbbb"
+
+	property int timeoutInterval: 1000
+
+	Timer {
+		id: openMainScreenTimer
+		interval: timeoutInterval
+		running: false
+		repeat: false
+		onTriggered: {
+			var component = Qt.createComponent("mainScreen.qml");
+			var win = component.createObject()
+			win.show()
+			visible = false
+			splashScreen.timeout()
+		}
+	}
+
+	QtObject {
+		id: internal
+
+		function checkLogin() {
+			if (usernameTextField.text == 'Mohammad' && passwordTextField.text == 'zarif'){
+				openMainScreenTimer.running = true
+			} else {
+				console.debug('pass')
+			}
+		}
+	}
 
 	Rectangle {
 		id: background
@@ -64,11 +94,11 @@ Window {
 			width: 200
 			height: 200
 			text: ""
+			value: 0
 			anchors.verticalCenter: parent.verticalCenter
 			samples: 12
 			textShowValue: false
 			enableDropShadow: true
-			value: 18
 			textColor: loginScreen.fgColor
 			progressColor: loginScreen.specialColor
 			progressWidth: 4
@@ -91,6 +121,7 @@ Window {
 			width: 280
 			height: 40
 			opacity: 0
+			text: lastUserLogin
 			anchors.bottom: parent.bottom
 			anchors.bottomMargin: 184
 			horizontalAlignment: Text.AlignHCenter
@@ -108,6 +139,8 @@ Window {
 			selectColor: loginScreen.fgColor
 			holderTextColor: loginScreen.fgColor
 			maximumLength: 32
+			Keys.onReturnPressed: internal.checkLogin()
+			Keys.onEnterPressed: internal.checkLogin()
 		}
 
 		CustomTextField {
@@ -132,6 +165,9 @@ Window {
 			holderTextColor: loginScreen.fgColor
 			maximumLength: 32
 			echoMode: TextInput.Password
+			Keys.onReturnPressed: internal.checkLogin()
+			Keys.onEnterPressed: internal.checkLogin()
+			text: 'zarif'
 		}
 
 		CustomCheckBox {
@@ -143,9 +179,9 @@ Window {
 			anchors.left: parent.left
 			anchors.right: loginButton.left
 			anchors.top: passwordTextField.bottom
-			anchors.rightMargin: 0
 			anchors.leftMargin: 50
 			anchors.topMargin: 10
+			checkBtnStatus: lastUserLogin != ''
 		}
 
 		CustomButton {
@@ -164,6 +200,7 @@ Window {
 			colorMouseOver: loginScreen.specialColorLow
 			colorDefault: loginScreen.fgColor
 			colorText: loginScreen.fgColor
+			onClicked: internal.checkLogin()
 		}
 
 		Label {
@@ -204,6 +241,10 @@ Window {
 		KeyframeGroup {
 			target: circularProgressBar
 			property: "value"
+			Keyframe {
+				frame: 100
+				value: 0
+			}
 			Keyframe {
 				frame: 3000
 				value: 100
@@ -292,6 +333,6 @@ Window {
 
 /*##^##
 Designer {
-	D{i:0;formeditorZoom:1.75}D{i:8}D{i:9}D{i:11}
+	D{i:0;formeditorZoom:1.75}D{i:6}D{i:13}
 }
 ##^##*/
