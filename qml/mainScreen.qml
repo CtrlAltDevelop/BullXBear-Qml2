@@ -7,24 +7,24 @@ import QtGraphicalEffects 1.15
 import "components"
 
 Window {
+	id: mainScreen
 	width: 1280
 	height: 720
 	minimumHeight: mainScreen.height * .75
 	minimumWidth: mainScreen.width * .75
 	visible: true
-	id: mainScreen
 	color: "#00000000"
 	modality: Qt.ApplicationModal
 	title: qsTr("Bull X Bear | Login")
 	flags: Qt.Window | Qt.FramelessWindowHint
 
 	property bool darkMode: true
-	property color surfaceColor: darkMode ? "#ef38393b" : '#efffffff'
-	property color bgColor: darkMode ? "#ef25262a" : '#efd9dee2'
-	property color deepColor: darkMode ? "#ef2d3134" : '#efeef2f5'
-	property color spColor: darkMode ? "#ef404348" : '#efe3e7ea'
-	property color fgColor: darkMode ? "#eff0f0f2" : '#ef4c4d4f'
-	property color pgColor: darkMode ? "#effeffff" : '#ef141414'
+	property color surfaceColor: darkMode ? "#f938393b" : '#f9ffffff'
+	property color bgColor: darkMode ? "#f925262a" : '#f9d9dee2'
+	property color deepColor: darkMode ? "#f92d3134" : '#f9eef2f5'
+	property color spColor: darkMode ? "#f9404348" : '#f9e3e7ea'
+	property color fgColor: darkMode ? "#f9f0f0f2" : '#f94c4d4f'
+	property color pgColor: darkMode ? "#f9feffff" : '#f9141414'
 
 	property color specialColorHigh: "#4975be"
 	property color specialColor: "#55aaff"
@@ -36,6 +36,34 @@ Window {
 	property color hoverColor: darkMode ? "#999999" : "#999999"
 	property color focusColor: darkMode ? "#55aaff" : "#55aaff"
 	property color defaultColot: darkMode ? "#bbbbbb" : "#bbbbbb"
+
+	property bool isMaximize: false
+	property bool isFullscreen: false
+
+	QtObject {
+		id: internal
+		function maximizeRestore() {if (isMaximize) {
+				isMaximize = false
+				mainScreen.showNormal()
+				maximizeBtn.iconBtnSource = "../images/svg/square.svg"
+			} else {
+				isMaximize = true
+				mainScreen.showMaximized()
+				maximizeBtn.iconBtnSource = "../images/svg/squares.svg"
+			}
+		}
+
+		function fullscreenRestore() {if (isFullscreen) {
+				isFullscreen = false
+				mainScreen.showNormal()
+				fullscreenBtn.iconBtnSource =  "../images/svg/fullscreen.svg"
+			} else {
+				isFullscreen = true
+				mainScreen.showFullScreen()
+				fullscreenBtn.iconBtnSource =  "../images/svg/-fullscreen.svg"
+			}
+		}
+	}
 
 	Rectangle {
 		id: background
@@ -49,18 +77,109 @@ Window {
 		anchors.bottomMargin: 5
 		anchors.topMargin: 5
 
-		DragHandler { onActiveChanged: if(active){loginScreen.startSystemMove()}}
-
 		Rectangle {
 			id: bar
-			x: 10
 			width: background.width - 20
-			height: 30
-			color: "#6affb4"
+			height: 40
+			color: "#00000000"
 			anchors.top: parent.top
 			anchors.topMargin: 10
 			anchors.horizontalCenterOffset: 0
 			anchors.horizontalCenter: parent.horizontalCenter
+			DragHandler {onActiveChanged: if (active) {mainScreen.startSystemMove()}}
+
+			MouseArea {
+				anchors.fill: parent
+				onDoubleClicked: internal.maximizeRestore()
+			}
+
+			Image {
+				id: image
+				width: 30
+				anchors.left: parent.left
+				anchors.top: parent.top
+				anchors.bottom: parent.bottom
+				source: "../images/logo/ms-icon-70x70.png"
+				anchors.leftMargin: 0
+				anchors.bottomMargin: 0
+				anchors.topMargin: 0
+				fillMode: Image.PreserveAspectFit
+			}
+
+			Label {
+				id: label
+				width: 225
+				color: mainScreen.pgColor
+				text: qsTr("Bull X Bear")
+				anchors.left: image.right
+				anchors.top: parent.top
+				anchors.bottom: parent.bottom
+				font.letterSpacing: 1
+				horizontalAlignment: Text.AlignLeft
+				verticalAlignment: Text.AlignVCenter
+				font.strikeout: false
+				font.pointSize: 14
+				anchors.leftMargin: 10
+			}
+
+			CustomAppButton {
+				id: closeBtn
+				anchors.verticalCenter: parent.verticalCenter
+				anchors.verticalCenterOffset: -8
+				z: 1
+				hoverColotBtn: "#884848"
+				pressColotBtn: "#ff2222"
+				iconBtnSource: "../images/svg/close.svg"
+				// CustomToolTip {text: "Exit"}
+				onClicked: mainScreen.close()
+				anchors {
+					rightMargin: 20
+					right: parent.right
+				}
+			}
+
+			CustomAppButton {
+				id: fullscreenBtn
+				anchors.verticalCenter: parent.verticalCenter
+				anchors.verticalCenterOffset: -8
+				z: 1
+				iconBtnSource: "../images/svg/fullscreen.svg"
+				// CustomToolTip {text: "Full Screen"}
+				onClicked: internal.fullscreenRestore()
+				anchors {
+					right: closeBtn.left
+					rightMargin: 20
+				}
+			}
+
+			CustomAppButton {
+				id: maximizeBtn
+				anchors.verticalCenter: parent.verticalCenter
+				anchors.verticalCenterOffset: -8
+				z: 1
+				iconBtnSource: "../images/svg/square.svg"
+				// CustomToolTip {text: "Maximize"}
+				onClicked: internal.maximizeRestore()
+				anchors {
+					right: fullscreenBtn.left
+					rightMargin: 20
+				}
+			}
+
+			CustomAppButton {
+				id: minimizeBtn
+				anchors.verticalCenter: parent.verticalCenter
+				anchors.verticalCenterOffset: -8
+				z: 1
+				iconBtnSource: "../images/svg/min.svg"
+				onPressed: mainScreen.showMinimized()
+				// CustomToolTip {text: "Minimize"}
+				anchors {
+					right: maximizeBtn.left
+					rightMargin: 20
+				}
+			}
+
 		}
 
 		Rectangle {
@@ -72,7 +191,6 @@ Window {
 			anchors.bottom: parent.bottom
 			anchors.bottomMargin: 10
 			anchors.leftMargin: 10
-			anchors.topMargin: 0
 		}
 
 		Rectangle {
@@ -80,38 +198,27 @@ Window {
 			color: "#073655"
 			anchors.left: menu.right
 			anchors.right: parent.right
-			anchors.top: header.bottom
+			anchors.top: bar.bottom
 			anchors.bottom: footer.top
-			anchors.rightMargin: 10
-			anchors.leftMargin: 0
-			anchors.bottomMargin: 0
 			anchors.topMargin: 0
+			anchors.rightMargin: 10
 		}
 
 		Rectangle {
 			id: footer
 			y: 668
-			height: 17
+			height: 20
 			color: "#ffaa00"
 			anchors.left: menu.right
 			anchors.right: parent.right
 			anchors.bottom: parent.bottom
 			anchors.rightMargin: 10
-			anchors.leftMargin: 0
 			anchors.bottomMargin: 10
 		}
 
-		Rectangle {
-			id: header
-			height: 30
-			color: "#3b98aa"
-			anchors.left: menu.right
-			anchors.right: parent.right
-			anchors.top: bar.bottom
-			anchors.leftMargin: 0
-			anchors.topMargin: 0
-			anchors.rightMargin: 10
-		}
+
+
+
 	}
 
 	MouseArea {
@@ -124,8 +231,7 @@ Window {
 		anchors.topMargin: 45
 		cursorShape: Qt.SizeHorCursor
 		DragHandler {
-					target: null
-					onActiveChanged: if (active) {mainScreen.startSystemResize(Qt.RightEdge)}
+			onActiveChanged: if (active) {mainScreen.startSystemResize(Qt.RightEdge)}
 		}
 	}
 
@@ -138,8 +244,7 @@ Window {
 		anchors.topMargin: 45
 		cursorShape: Qt.SizeHorCursor
 		DragHandler {
-					target: null
-					onActiveChanged: if (active) {mainScreen.startSystemResize(Qt.LeftEdge)}
+			onActiveChanged: if (active) {mainScreen.startSystemResize(Qt.LeftEdge)}
 		}
 	}
 
@@ -152,8 +257,7 @@ Window {
 		anchors.rightMargin: 20
 		cursorShape: Qt.SizeVerCursor
 		DragHandler {
-					target: null
-					onActiveChanged: if (active) {mainScreen.startSystemResize(Qt.BottomEdge)}
+			onActiveChanged: if (active) {mainScreen.startSystemResize(Qt.BottomEdge)}
 		}
 	}
 
@@ -165,26 +269,9 @@ Window {
 		anchors.bottom: parent.bottom
 		cursorShape: Qt.SizeFDiagCursor
 		DragHandler {
-					target: null
-					onActiveChanged: if (active) {mainScreen.startSystemResize(Qt.RightEdge | Qt.BottomEdge)}
+			onActiveChanged: if (active) {mainScreen.startSystemResize(Qt.RightEdge | Qt.BottomEdge)}
 		}
 	}
 
-	MouseArea {
-		id: moveApp
-		height: 45
-		anchors.left: parent.left
-		anchors.right: parent.right
-		anchors.top: parent.top
-		DragHandler {
-				 target: null
-				 onActiveChanged: if (active) {mainScreen.startSystemMove()}
-		}
-	}
 }
 
-/*##^##
-Designer {
-	D{i:0;formeditorZoom:1.1}D{i:3}D{i:4}D{i:5}D{i:6}D{i:7}D{i:8}D{i:16}
-}
-##^##*/
