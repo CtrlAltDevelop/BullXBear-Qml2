@@ -7,8 +7,8 @@ import QtGraphicalEffects 1.15
 import "components"
 
 Window {
-	width: 400
-	height: 400
+	width: 350
+	height: 450
 	visible: true
 	id: loginScreen
 	color: "#00000000"
@@ -85,13 +85,14 @@ Window {
 
 		CustomTextField {
 			id: usernameTextField
-			y: 210
-			width: 282
+			y: 226
+			width: 280
 			height: 40
 			opacity: 0
 			anchors.bottom: parent.bottom
-			anchors.bottomMargin: 70
+			anchors.bottomMargin: 184
 			horizontalAlignment: Text.AlignHCenter
+			anchors.horizontalCenterOffset: 0
 			leftPadding: 6
 			font.pointSize: 11
 			placeholderText: "Email or Username"
@@ -109,8 +110,8 @@ Window {
 
 		CustomTextField {
 			id: passwordTextField
-			width: 282
-			height: 40
+			width: usernameTextField.width
+			height: usernameTextField.height
 			anchors.top: usernameTextField.bottom
 			horizontalAlignment: Text.AlignHCenter
 			leftPadding: 6
@@ -131,13 +132,24 @@ Window {
 			echoMode: TextInput.Password
 		}
 
-		CustomButton {
-			id: customButton
-			x: 40
-			width: 283
-			height: 35
+		CustomCheckBox {
+			id: rememberCheckBox
+			width: usernameTextField.width
+			height: 20
+
 			opacity: usernameTextField.opacity
 			anchors.top: passwordTextField.bottom
+			anchors.horizontalCenter: parent.horizontalCenter
+			anchors.topMargin: 10
+		}
+
+		CustomButton {
+			id: customButton
+			width: usernameTextField.width
+			height: 35
+			opacity: usernameTextField.opacity
+			anchors.top: rememberCheckBox.bottom
+			anchors.horizontalCenterOffset: 0
 			font.pointSize: 12
 			anchors.horizontalCenter: parent.horizontalCenter
 			anchors.topMargin: 10
@@ -248,7 +260,7 @@ Window {
 				frame: 4000
 			}
 			Keyframe {
-				value: 150
+				value: 180
 				frame: 5000
 			}
 		}
@@ -257,6 +269,6 @@ Window {
 
 /*##^##
 Designer {
-	D{i:0;formeditorZoom:1.75}D{i:7}D{i:8}D{i:9}
+	D{i:0;formeditorZoom:1.75}D{i:10}
 }
 ##^##*/
