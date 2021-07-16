@@ -7,25 +7,23 @@ Rectangle {
 
 	property int sizeBtn: 15
 	property string checkBtnText: qsTr("Type Something")
-	property bool checkStatus: false
-	property color hoverColotBtn: "#555555"
-	property color pressColotBtn: "#000000"
-	property color defaultColotBtn: "#999999"
+	property bool checkBtnStatus: false
+	property color hoverColorBtn: "#555555"
+	property color pressColorBtn: "#000000"
+	property color defaultColorBtn: "#999999"
 	property url checkBtnSource: "../../images/svg/fi-rr-checkbox.svg"
 	property url uncheckBtnSource: "../../images/svg/fi-rr-square.svg"
 
 
 	QtObject {
 		id: internal
-		property color dynamicColor: if(checkBtn.down){checkBtn.down ? pressColotBtn : defaultColotBtn} else {
-										 checkBtn.hovered ? hoverColotBtn : defaultColotBtn}
-		function ckechBtnFunctions() {
-			if (checkStatus) {
-				checkStatus = false
-				iconBtn.source = uncheckBtnSource
+		property color dynamicColor: if(checkBtn.down){checkBtn.down ? pressColorBtn : defaultColorBtn} else {
+										 checkBtn.hovered ? hoverColorBtn : defaultColorBtn}
+		function checkBtnFunctions() {
+			if (checkBtnStatus) {
+				checkBtnStatus = false
 			} else {
-				checkStatus = true
-				iconBtn.source = checkBtnSource
+				checkBtnStatus = true
 			}
 		}
 	}
@@ -40,7 +38,7 @@ Rectangle {
 		antialiasing: true
 		implicitWidth: sizeBtn
 		implicitHeight: sizeBtn
-		onClicked: internal.ckechBtnFunctions()
+		onClicked: internal.checkBtnFunctions()
 		background: Rectangle {
 			id: bgBtn
 			color: '#00000000'
@@ -49,7 +47,7 @@ Rectangle {
 				id: iconBtn
 				width: sizeBtn
 				height: sizeBtn
-				source: uncheckBtnSource
+				source: checkBtnStatus ? checkBtnSource : uncheckBtnSource
 				fillMode: Image.PreserveAspectFit
 				anchors {
 					horizontalCenter: parent.horizontalCenter
