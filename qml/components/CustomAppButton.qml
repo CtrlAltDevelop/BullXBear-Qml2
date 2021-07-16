@@ -5,7 +5,7 @@ import QtGraphicalEffects 1.15
 Button {
 	id: customBtn
 
-	property int sizeBtn: 15
+	property int sizeBtn: 12
 	property color hoverColotBtn: "#555555"
 	property color pressColotBtn: "#000000"
 	property color defaultColotBtn: "#999999"
